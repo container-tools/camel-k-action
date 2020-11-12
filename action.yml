@@ -1,0 +1,12 @@
+name: "Camel K"
+description: "Install Camel K tools"
+author: "Container Tools developers"
+branding:
+  color: red
+  icon: tool
+inputs:
+  version:
+    description: "The Camel K version to use (default: latest)"
+runs:
+  using: "node12"
+  main: "main.js"
