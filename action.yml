@@ -2,8 +2,8 @@ name: "Camel K Tools"
 description: "Install Camel K tools"
 author: "Container Tools developers"
 branding:
-  color: red
-  icon: tool
+  color: yellow
+  icon: package
 inputs:
   version:
     description: "The Camel K version to use (default: latest)"
