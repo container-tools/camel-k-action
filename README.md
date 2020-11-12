@@ -1,4 +1,4 @@
-# Camel K Action
+# Camel K Tools Action
 
 [![](https://github.com/container-tools/camel-k-action/workflows/Test/badge.svg?branch=main)](https://github.com/container-tools/camel-k-action/actions)
 
