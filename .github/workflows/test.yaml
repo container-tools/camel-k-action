@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+  - cron: "0 7 * * *"
 
 jobs:
 
@@ -36,8 +38,8 @@ jobs:
         - macos-latest
         - windows-latest
         version:
-        - v1.2.0
-        - v1.1.1
+        - v1.5.0
+        - v1.4.1
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
