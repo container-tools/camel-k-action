@@ -16,6 +16,8 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+set -x
+
 DEFAULT_VERSION=latest
 
 show_help() {
@@ -30,7 +32,8 @@ EOF
 
 main() {
     local version="$DEFAULT_VERSION"
-
+    local github_token=
+    
     parse_command_line "$@"
 
     install_camel_k
@@ -54,6 +57,16 @@ parse_command_line() {
                     exit 1
                 fi
                 ;;
+            --github-token)
+                if [[ -n "${2:-}" ]]; then
+                    github_token="$2"
+                    shift
+                else
+                    echo "ERROR: '--github-token' cannot be empty." >&2
+                    show_help
+                    exit 1
+                fi
+                ;;
             *)
                 break
                 ;;
@@ -68,7 +81,18 @@ install_camel_k() {
     info=
     if [[ "$version" = "latest" ]]
     then
-        install_version=$(curl --silent "https://api.github.com/repos/apache/camel-k/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        #echo "--- $GITHUB_TOKEN ---"
+        #curl -H "Authorization: $GITHUB_TOKEN" --silent "https://api.github.com/repos/apache/camel-k/releases/latest"
+        #echo "----"
+        #curl --silent "https://api.github.com/repos/apache/camel-k/releases/latest"
+        #curl --silent "https://api.github.com/repos/apache/camel-k/releases/latest" | grep '"tag_name":'
+        #curl --silent "https://api.github.com/repos/apache/camel-k/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'
+        if [[ -z "$github_token" ]]
+        then
+            install_version=$(curl --silent "https://api.github.com/repos/apache/camel-k/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        else
+            install_version=$(curl -H "Authorization: $github_token" --silent "https://api.github.com/repos/apache/camel-k/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        fi
         info="=$install_version"
     fi
     os=$(get_os)

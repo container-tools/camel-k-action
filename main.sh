@@ -25,6 +25,10 @@ main() {
         args+=(--version "${INPUT_VERSION}")
     fi
 
+    if [[ -n "${INPUT_GITHUB_TOKEN:-}" ]]; then
+        args+=(--github-token "${INPUT_GITHUB_TOKEN}")
+    fi
+
     if [[ ${#args[@]} -eq 0 ]]
     then
         "$SCRIPT_DIR/install.sh"

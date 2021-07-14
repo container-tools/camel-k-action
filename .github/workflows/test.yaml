@@ -10,6 +10,20 @@ on:
 
 jobs:
 
+  test-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Install Camel K
+        uses: ./
+
+      - name: Test
+        shell: bash
+        run: |
+          kamel version
+
   test-default:
     strategy:
       matrix:
@@ -24,6 +38,8 @@ jobs:
 
       - name: Install Camel K
         uses: ./
+        with:
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Test
         shell: bash
