@@ -7,6 +7,8 @@ branding:
 inputs:
   version:
     description: "The Camel K version to use (default: latest)"
+  github_token:
+    description: "The Github token used to retrieve latest release from Github"
 runs:
   using: "node12"
   main: "main.js"

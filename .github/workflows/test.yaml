@@ -5,8 +5,24 @@ on:
   push:
     branches:
       - main
+  schedule:
+  - cron: "0 7 * * *"
 
 jobs:
+
+  test-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Install Camel K
+        uses: ./
+
+      - name: Test
+        shell: bash
+        run: |
+          kamel version
 
   test-default:
     strategy:
@@ -22,6 +38,8 @@ jobs:
 
       - name: Install Camel K
         uses: ./
+        with:
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Test
         shell: bash
@@ -36,8 +54,8 @@ jobs:
         - macos-latest
         - windows-latest
         version:
-        - v1.2.0
-        - v1.1.1
+        - v1.5.0
+        - v1.4.1
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
