@@ -16,6 +16,7 @@ For more information, reference the GitHub Help Documentation for [Creating a wo
 For more information on inputs, see the [API Documentation](https://developer.github.com/v3/repos/releases/#input)
 
 - `version`: The Camel K version to use (default: `latest`)
+- `github_token`: Optional token used when fetching the latest Camel K release to avoid hitting rate limits (you should set it to `${{ secrets.GITHUB_TOKEN }}`)
 
 ### Example Workflow
 

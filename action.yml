@@ -8,7 +8,7 @@ inputs:
   version:
     description: "The Camel K version to use (default: latest)"
   github_token:
-    description: "The Github token used to retrieve latest release from Github"
+    description: "Optional token used when fetching the latest Camel K release to avoid hitting rate limits"
 runs:
   using: "node12"
   main: "main.js"
