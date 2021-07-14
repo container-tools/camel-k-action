@@ -16,8 +16,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-set -x
-
 DEFAULT_VERSION=latest
 
 show_help() {
@@ -25,7 +23,8 @@ cat << EOF
 Usage: $(basename "$0") <options>
 
     -h, --help                              Display help
-    -v, --version                           The Camel K version to use (default: $DEFAULT_VERSION)"
+    -v, --version                           The Camel K version to use (default: $DEFAULT_VERSION)
+    --github-token                          Optional token used when fetching the latest Camel K release to avoid hitting rate limits
 
 EOF
 }
@@ -81,12 +80,6 @@ install_camel_k() {
     info=
     if [[ "$version" = "latest" ]]
     then
-        #echo "--- $GITHUB_TOKEN ---"
-        #curl -H "Authorization: $GITHUB_TOKEN" --silent "https://api.github.com/repos/apache/camel-k/releases/latest"
-        #echo "----"
-        #curl --silent "https://api.github.com/repos/apache/camel-k/releases/latest"
-        #curl --silent "https://api.github.com/repos/apache/camel-k/releases/latest" | grep '"tag_name":'
-        #curl --silent "https://api.github.com/repos/apache/camel-k/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'
         if [[ -z "$github_token" ]]
         then
             install_version=$(curl --silent "https://api.github.com/repos/apache/camel-k/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
