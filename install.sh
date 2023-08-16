@@ -32,7 +32,7 @@ EOF
 main() {
     local version="$DEFAULT_VERSION"
     local github_token=
-    
+
     parse_command_line "$@"
 
     install_camel_k
@@ -93,7 +93,20 @@ install_camel_k() {
 
     echo "Installing Camel K CLI version $version$info on $os..."
 
-    curl -L --silent https://github.com/apache/camel-k/releases/download/$install_version/camel-k-client-$binary_version-$os-64bit.tar.gz -o kamel.tar.gz
+    arch=$(get_arch)
+    if [[ $binary_version == 1.* ]]
+    then
+      arch="64bit"
+
+      if [[ "$os" = "darwin" ]]
+      then
+        os="mac"
+      fi
+    fi
+
+    echo "Loading camel-k/releases/download/$install_version/camel-k-client-$binary_version-$os-$arch.tar.gz"
+
+    curl -L --silent https://github.com/apache/camel-k/releases/download/$install_version/camel-k-client-$binary_version-$os-$arch.tar.gz -o kamel.tar.gz
     mkdir -p _kamel
     tar -zxf kamel.tar.gz --directory ./_kamel
 
@@ -125,13 +138,22 @@ get_os() {
     osline="$(uname -s)"
     case "${osline}" in
         Linux*)     os=linux;;
-        Darwin*)    os=mac;;
+        Darwin*)    os=darwin;;
         CYGWIN*)    os=windows;;
         MINGW*)     os=windows;;
         Windows*)   os=windows;;
         *)          os="UNKNOWN:${osline}"
     esac
     echo ${os}
+}
+
+get_arch() {
+    archline="$(uname -m)"
+    case "${archline}" in
+        x86_64*) arch="amd64";;
+        *)       arch="${archline}"
+    esac
+    echo ${arch}
 }
 
 main "$@"
