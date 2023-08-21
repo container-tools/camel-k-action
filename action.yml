@@ -10,5 +10,5 @@ inputs:
   github_token:
     description: "Optional token used when fetching the latest Camel K release to avoid hitting rate limits"
 runs:
-  using: "node12"
+  using: "node16"
   main: "main.js"
